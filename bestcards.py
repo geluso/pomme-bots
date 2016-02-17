@@ -5725,3 +5725,18 @@ CARD_RANKINGS = {
   "http://www.goatse.info/hello.jpg":1,
   "meatman.png":1
 }
+
+def best_card(cards):
+  best_score = 0
+  best_card = None
+  for card in cards:
+    try:
+      ranking = CARD_RANKINGS[card]
+      if ranking > best_score:
+        best_score = ranking
+        best_card = card
+    except KeyError:
+      ranking = 0
+    print "%04d %s" % (ranking, card)
+  return best_card
+
