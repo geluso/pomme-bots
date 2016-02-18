@@ -2,6 +2,7 @@
 
 import argparse
 import time
+import sys
 
 from bestcards import *
 from pomme_api import *
@@ -13,6 +14,7 @@ parser.add_argument("--session", type=str, nargs="?", default="", help="Providin
 parser.add_argument("--room", type=str, nargs="?", default="bigapple", help="Which room to join.")
 parser.add_argument("--submitdelay", type=int, default=15, help="The bot will wait until the countdown is below this number to submit bets.")
 parser.add_argument("--judgedelay", type=int, default=7, help="The bot will wait until the countdown is below this number to submit judgements.")
+parser.add_argument("--verbose", type=bool, default=False, help="Print things if True.")
 
 args = parser.parse_args()
 username = args.username
@@ -36,7 +38,18 @@ print "Robot:", username
 print "Joined:", room
 print "Hand:", cards
 
+def check_commands(room):
+  try:
+    command = open("commands/" + room).read().strip()
+    if command == "leave":
+      print "leaving"
+      sys.exit()
+  except IOError:
+    sys.exit()
+
 while (True):
+  check_commands(room)
+
   time.sleep(1)
   poll = api_poll(session, room)
 

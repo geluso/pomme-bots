@@ -5726,6 +5726,20 @@ CARD_RANKINGS = {
   "meatman.png":1
 }
 
+def worst_card(cards):
+  worst_score = 9999
+  worst_card = None
+  for card in cards:
+    try:
+      ranking = CARD_RANKINGS[card]
+      if ranking < worst_score:
+        worst_score = ranking
+        worst_card = card
+    except KeyError:
+      ranking = 9999
+    print "%04d %s" % (ranking, card)
+  return worst_card
+
 def best_card(cards):
   best_score = 0
   best_card = None

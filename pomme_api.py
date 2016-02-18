@@ -4,6 +4,7 @@ import json
 BASE_URL = "http://pomme.us:32123"
 LOGIN = BASE_URL + "/user/login"
 LOGOUT = BASE_URL + "/user/logout"
+GAME_LIST = BASE_URL + "/game/list"
 GAME_JOIN = BASE_URL + "/game/join"
 GAME_POLL = BASE_URL + "/game/poll"
 GAME_BET = BASE_URL + "/game/bet"
@@ -29,6 +30,8 @@ STATES = {
   7: "someone won game."
 }
 
+KNOWN_BOTS = ["asdfus", "newplayer", "polol", "puget", "formulaD"] 
+
 def is_json(func):
   def func_wrapper(*args):
     return json.loads(func(*args).text)
@@ -37,6 +40,11 @@ def is_json(func):
 @is_json
 def api_login(name, password=""):
   req = requests.post(LOGIN, data={"name": name, "password":password})
+  return req
+
+@is_json
+def api_list(session):
+  req = requests.post(GAME_LIST, data={"session": session})
   return req
 
 @is_json
