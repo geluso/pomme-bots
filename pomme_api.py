@@ -1,5 +1,6 @@
 import requests
 import json
+import md5
 
 BASE_URL = "http://pomme.us:32123"
 LOGIN = BASE_URL + "/user/login"
@@ -34,11 +35,14 @@ KNOWN_BOTS = ["asdfus", "newplayer", "polol", "puget", "formulaD"]
 
 def is_json(func):
   def func_wrapper(*args):
-    return json.loads(func(*args).text)
+    response = func(*args).text
+    return json.loads(response)
   return func_wrapper
 
 @is_json
 def api_login(name, password=""):
+  if password:
+    password = md5.new("pomme" + password).hexdigest()
   req = requests.post(LOGIN, data={"name": name, "password":password})
   return req
 

@@ -1,9 +1,12 @@
 #!/usr/local/bin/python
 
 import argparse
+import random
 import os
+import sys
 
 from pomme_api import *
+from bot import BOTS
 from subprocess import Popen
 
 parser = argparse.ArgumentParser(description="Spawns and destroys bots in given rooms.")
@@ -12,7 +15,7 @@ parser.add_argument("--join", type=str, help="Name of the room for bots to join"
 parser.add_argument("--kill", type=str, help="Name of the room for bots to evac.")
 
 ENOUGH_HUMANS = 7
-MAX_bots = 3
+MAX_BOTS = 3
 
 username = "asdfus"
 password = ""
@@ -28,12 +31,13 @@ def spawn_bots(room):
   commands.write("join")
   commands.close()
 
-  bots = ["polol", "formulaD", "puget"]
+  bots = random.sample(BOTS, MAX_BOTS)
   for bot in bots:
     print "spawning %s in %s" % (bot, room)
-    cmd = ["nohup", "python", "/Users/moonmayor/Code/pomme-bots/bot.py", bot, "--room", room]
+    cmd = ["nohup", "python", "/Users/moonmayor/Code/pomme-bots/bot.py", bot, "--room", room, "--password", "secretpomme"]
     devnull = open(os.devnull, 'wb')
-    Popen(cmd, stdout=devnull, stderr=devnull)
+    Popen(cmd)
+    #Popen(cmd, stdout=devnull, stderr=devnull)
 
 args = parser.parse_args()
 if args.join:
@@ -66,7 +70,7 @@ for room in games:
     if args.control:
       if len(humans) >= ENOUGH_HUMANS:
         kill_bots(room)
-      elif len(humans) > 0 and len(bots) < MAX_bots:
+      elif len(humans) > 0 and len(bots) < MAX_BOTS:
         spawn_bots(room)
       print
 
