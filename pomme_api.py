@@ -40,7 +40,10 @@ def is_json(func):
   def func_wrapper(*args):
     response = func(*args)
     try:
-      return json.loads(response)
+      jj = json.loads(response)
+      if "error" in jj:
+        print jj["error"]
+      return jj
     except ValueError:
       import pdb; pdb.set_trace()
   return func_wrapper

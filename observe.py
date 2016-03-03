@@ -44,6 +44,9 @@ def spawn_bots(room):
 
 def get_info():
   login = api_login(username, password)
+  if "error" in login:
+    print login["error"]
+    sys.exit()
   session = login["session"]
 
   info = api_list(session)
