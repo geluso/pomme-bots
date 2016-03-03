@@ -3,6 +3,7 @@
 import argparse
 import time
 import sys
+import os
 
 from bestcards import *
 from pomme_api import *
@@ -23,8 +24,8 @@ BOTS = ["polol", "formulaD", "puget", "Wubbles", "Cowboy", "manky", "Rickter", "
 def check_commands(room):
   try:
     command = open("commands/" + room).read().strip()
-    if command == "leave":
-      print "leaving"
+    if command == "leave" or os.path.isfile("commands/kill"):
+      print username, "received kill order"
       sys.exit()
   except IOError:
     sys.exit()
@@ -39,6 +40,9 @@ if __name__ == "__main__":
   if not session:
     print "Logging in as", username, "with password:", password
     login = api_login(username, password)
+    if "error" in login:
+      print username, login["error"]
+      sys.exit()
     session = login["session"]
   else:
     print "using existing session."
@@ -61,7 +65,7 @@ if __name__ == "__main__":
     state = poll["state"]
     bets = poll["bets"]
 
-    print state, STATES[state]
+    print username, state, STATES[state]
     if state == STATE_BET:
       countdown = poll["countdown"]
       if countdown > args.submitdelay:

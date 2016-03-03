@@ -17,8 +17,8 @@ parser.add_argument("--kill", type=str, help="Name of the room for bots to evac.
 ENOUGH_HUMANS = 7
 MAX_BOTS = 3
 
-username = "asdfus"
-password = ""
+username = "botcontrol"
+password = "secretpomme"
 
 def kill_bots(room):
   print "killing", room
@@ -34,7 +34,8 @@ def spawn_bots(room):
   bots = random.sample(BOTS, MAX_BOTS)
   for bot in bots:
     print "spawning %s in %s" % (bot, room)
-    cmd = ["nohup", "python", "/Users/moonmayor/Code/pomme-bots/bot.py", bot, "--room", room, "--password", "secretpomme"]
+    cwd = os.getcwd()
+    cmd = ["python", cwd + "/bot.py", bot, "--room", room, "--password", "secretpomme"]
     devnull = open(os.devnull, 'wb')
     Popen(cmd)
     #Popen(cmd, stdout=devnull, stderr=devnull)
@@ -49,6 +50,9 @@ if args.kill:
   sys.exit()
 
 login = api_login(username, password)
+if "error" in login:
+  print login["error"]
+  sys.exit()
 session = login["session"]
 
 info = api_list(session)
@@ -59,7 +63,7 @@ for room in games:
     players = games[room]["players"]
     humans, bots = [], []
     for player in players:
-      if player["name"] in KNOWN_BOTS:
+      if player["name"] in BOTS:
         bots.append(player)
       else:
         humans.append(player)

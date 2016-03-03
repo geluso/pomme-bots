@@ -32,8 +32,6 @@ STATES = {
   7: "someone won game."
 }
 
-KNOWN_BOTS = ["asdfus", "newplayer", "polol", "puget", "formulaD"] 
-
 def post(url, data):
   data = urllib.urlencode(data)
   return urllib2.urlopen(url, data).read()
@@ -41,7 +39,10 @@ def post(url, data):
 def is_json(func):
   def func_wrapper(*args):
     response = func(*args)
-    return json.loads(response)
+    try:
+      return json.loads(response)
+    except ValueError:
+      import pdb; pdb.set_trace()
   return func_wrapper
 
 @is_json
