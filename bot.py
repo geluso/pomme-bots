@@ -19,7 +19,25 @@ def get_args():
   parser.add_argument("--verbose", type=bool, default=False, help="Print things if True.")
   return parser.parse_args()
 
-BOTS = ["polol", "formulaD", "puget", "Wubbles", "Cowboy", "manky", "Rickter", "quaid", "Bernadette", "Pheobe", "Butterfly", "Moon_child", "girlafraid", "sad_girl", "Suzzzy", "Mars_girl", "Seatbelt"]
+BOTS = [
+  "polol",
+  "formulaD",
+  "puget",
+  "Wubbles",
+  "Cowboy",
+  "manky",
+  "Rickter",
+  "quaid",
+  "Bernadette",
+  "Pheobe",
+  "Butterfly",
+  "Moon_child",
+  "girlafraid",
+  "sad_girl",
+  "Suzzzy",
+  "Mars_girl",
+  "Seatbelt"
+]
 
 def check_commands(room):
   try:
