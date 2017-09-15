@@ -29,6 +29,9 @@ def kill_bots(room):
   commands.close()
 
 def spawn_bots(room):
+  # only send bots to bigapple for now.
+  # keep all other rooms human so bots aren't spammy
+  room = "bigapple"
   commands = open("commands/" + room, "w")
   commands.write("join")
   commands.close()
