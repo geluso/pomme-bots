@@ -17,6 +17,7 @@ def get_args():
   parser.add_argument("--submitdelay", type=int, default=15, help="The bot will wait until the countdown is below this number to submit bets.")
   parser.add_argument("--judgedelay", type=int, default=7, help="The bot will wait until the countdown is below this number to submit judgements.")
   parser.add_argument("--verbose", type=bool, default=False, help="Print things if True.")
+  parser.add_argument("--ignorecommands", type=bool, default=False, help="Run without reading the commands control file.")
   return parser.parse_args()
 
 BOTS = [
@@ -32,8 +33,6 @@ BOTS = [
   "Pheobe",
   "Butterfly",
   "Moon_child",
-  "girlafraid",
-  "sad_girl",
   "Suzzzy",
   "Mars_girl",
   "Seatbelt"
@@ -75,7 +74,8 @@ if __name__ == "__main__":
   print "Hand:", cards
 
   while (True):
-    check_commands(room)
+    if not args.ignorecommands:
+      check_commands(room)
 
     time.sleep(1)
     poll = api_poll(session, room)
