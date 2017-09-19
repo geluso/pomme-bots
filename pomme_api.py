@@ -45,7 +45,8 @@ def is_json(func):
         print jj["error"]
       return jj
     except ValueError:
-      import pdb; pdb.set_trace()
+      #import pdb; pdb.set_trace()
+      pass
   return func_wrapper
 
 @is_json
