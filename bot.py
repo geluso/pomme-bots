@@ -23,19 +23,19 @@ def get_args():
 BOTS = [
   "polol",
   "formulaD",
-  "puget",
-  "Wubbles",
   "Cowboy",
-  "manky",
-  "Rickter",
-  "quaid",
-  "Bernadette",
-  "Pheobe",
-  "Butterfly",
-  "Moon_child",
-  "Suzzzy",
-  "Mars_girl",
-  "Seatbelt"
+  #"puget",
+  #"Wubbles",
+  #"manky",
+  #"Rickter",
+  #"quaid",
+  #"Bernadette",
+  #"Pheobe",
+  #"Butterfly",
+  #"Moon_child",
+  #"Suzzzy",
+  #"Mars_girl",
+  #"Seatbelt"
 ]
 
 def check_commands(room):
