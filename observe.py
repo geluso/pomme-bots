@@ -43,7 +43,7 @@ def spawn_bots(room, verbose=False):
   for bot in bots:
     log("spawning %s in %s" % (bot, room))
     cwd = os.getcwd()
-    cmd = ["python", cwd + "/bot.py", bot, "--room", room, "--password", "secretpomme", "--verbose", verbose]
+    cmd = ["python", cwd + "/bot.py", bot, "--room", room, "--password", "secretpomme", "--verbose", str(verbose)]
     devnull = open(os.devnull, 'wb')
     Popen(cmd)
 
