@@ -16,7 +16,7 @@ parser.add_argument("--stat", type=bool, default=False, help="If True only check
 parser.add_argument("--join", type=str, help="Name of the room for bots to join")
 parser.add_argument("--kill", type=str, help="Name of the room for bots to evac.")
 
-ENOUGH_HUMANS = 7
+ENOUGH_HUMANS = 4
 MAX_BOTS = 3
 
 username = "botcontrol"
