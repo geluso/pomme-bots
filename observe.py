@@ -23,7 +23,7 @@ username = "botcontrol"
 password = "secretpomme"
 
 def kill_bots(room):
-  print "killing", room
+  #print "killing", room
   commands = open("commands/" + room, "w")
   commands.write("leave")
   commands.close()
@@ -38,7 +38,7 @@ def spawn_bots(room):
 
   bots = random.sample(BOTS, MAX_BOTS)
   for bot in bots:
-    print "spawning %s in %s" % (bot, room)
+    #print "spawning %s in %s" % (bot, room)
     cwd = os.getcwd()
     cmd = ["python", cwd + "/bot.py", bot, "--room", room, "--password", "secretpomme"]
     devnull = open(os.devnull, 'wb')
@@ -48,7 +48,7 @@ def spawn_bots(room):
 def get_info():
   login = api_login(username, password)
   if "error" in login:
-    print login["error"]
+    #print login["error"]
     sys.exit()
   session = login["session"]
 
@@ -66,14 +66,13 @@ def get_info():
           humans.append(player)
 
       # show human/robot room info.
-      print "%d humans, %d bots in %s" % (len(humans), len(bots), room)
+      #print "%d humans, %d bots in %s" % (len(humans), len(bots), room)
 
       if args.control:
         if len(humans) >= ENOUGH_HUMANS:
           kill_bots(room)
         elif len(humans) > 0 and len(bots) < MAX_BOTS:
           spawn_bots(room)
-        print
 
 args = parser.parse_args()
 if args.join:

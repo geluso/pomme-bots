@@ -42,7 +42,7 @@ def check_commands(room):
   try:
     command = open("commands/" + room).read().strip()
     if command == "leave" or os.path.isfile("commands/kill"):
-      print username, "received kill order"
+      #print username, "received kill order"
       sys.exit()
   except IOError:
     sys.exit()
@@ -55,23 +55,24 @@ if __name__ == "__main__":
   room = args.room
 
   if not session:
-    print "Logging in as", username, "with password:", password
+    #print "Logging in as", username, "with password:", password
     login = api_login(username, password)
     if "error" in login:
-      print username, login["error"]
+      #print username, login["error"]
       sys.exit()
     session = login["session"]
   else:
-    print "using existing session."
-  print session
+    #print "using existing session."
+    pass
+  #print session
 
   game = api_join(session, room)
   room = game["path"]
   cards = game["cards"]
 
-  print "Robot:", username
-  print "Joined:", room
-  print "Hand:", cards
+  #print "Robot:", username
+  ##print "Joined:", room
+  #print "Hand:", cards
 
   while (True):
     if not args.ignorecommands:
@@ -83,32 +84,35 @@ if __name__ == "__main__":
     state = poll["state"]
     bets = poll["bets"]
 
-    print username, state, STATES[state]
+    #print username, state, STATES[state]
     if state == STATE_BET:
       countdown = poll["countdown"]
       if countdown > args.submitdelay:
-        print countdown, "waiting to submit bet."
+        #print countdown, "waiting to submit bet."
+        pass
       else:
         card = best_card(cards)
-        print "betting:", card
+        #print "betting:", card
         bet = api_bet(session, room, card)
-        print bet
+        #print bet
         if len(bet) > 0:
           new_card = bet["card"]
-          print "adding:", card
+          #print "adding:", card
           cards.remove(card)
           cards.append(new_card)
-          print "new hand:", cards
+          #print "new hand:", cards
     elif state == STATE_PICKED:
-      print "Waiting for players to submit."
+      #print "Waiting for players to submit."
+      pass
     elif state == STATE_JUDGE:
       countdown = poll["countdown"]
       if countdown > args.judgedelay:
-        print countdown, "waiting to submit judgement."
+        #print countdown, "waiting to submit judgement."
+        pass
       else:
         card = best_card(bets)
-        print "bets:", bets
-        print "betting:", card
+        #print "bets:", bets
+        #print "betting:", card
         api_judge(session, room, card)
     else:
       pass

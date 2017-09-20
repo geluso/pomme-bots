@@ -5737,7 +5737,7 @@ def worst_card(cards):
         worst_card = card
     except KeyError:
       ranking = 9999
-    print "%04d %s" % (ranking, card)
+    #print "%04d %s" % (ranking, card)
   return worst_card
 
 def best_card(cards):
@@ -5751,6 +5751,6 @@ def best_card(cards):
         best_card = card
     except KeyError:
       ranking = 0
-    print "%04d %s" % (ranking, card)
+    #print "%04d %s" % (ranking, card)
   return best_card
 
