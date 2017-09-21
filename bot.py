@@ -4,6 +4,7 @@ import argparse
 import time
 import sys
 import os
+import random
 
 from bestcards import *
 from pomme_api import *
@@ -96,6 +97,8 @@ if __name__ == "__main__":
         log(countdown, "waiting to submit bet.")
       else:
         card = best_card(cards)
+        if card is None:
+          card = random.choice(cards)
         log("betting:", card)
         bet = api_bet(session, room, card)
         log(bet)
