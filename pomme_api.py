@@ -1,9 +1,10 @@
-import urllib
-import urllib2
+import ssl
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import json
-import md5
+import hashlib
 
-BASE_URL = "http://pomme.us:32123"
+BASE_URL = "https://pomme.us:32123"
 LOGIN = BASE_URL + "/user/login"
 LOGOUT = BASE_URL + "/user/logout"
 GAME_LIST = BASE_URL + "/game/list"
@@ -32,9 +33,14 @@ STATES = {
   7: "someone won game."
 }
 
+CTX = ssl.create_default_context()
+CTX.check_hostname = False
+CTX.verify_mode = ssl.CERT_NONE
+
 def post(url, data):
-  data = urllib.urlencode(data)
-  return urllib2.urlopen(url, data).read()
+  data = urllib.parse.urlencode(data)
+  data = data.encode("utf-8")
+  return urllib.request.urlopen(url, data, context=CTX).read()
 
 def is_json(func):
   def func_wrapper(*args):
@@ -53,7 +59,8 @@ def is_json(func):
 @is_json
 def api_login(name, password=""):
   if password:
-    password = md5.new("pomme" + password).hexdigest()
+    password = "pomme" + password
+    password = hashlib.md5(bytes(password, "utf-8")).hexdigest()
   data={"name": name, "password":password}
   return post(LOGIN, data)
 

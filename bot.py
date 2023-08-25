@@ -9,7 +9,11 @@ import random
 from bestcards import *
 from pomme_api import *
 import logging
-from logging import *
+
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S')
 
 def get_args():
   parser = argparse.ArgumentParser(description="Creates a Pomme bot that joins a room and automatically plays the game.")
@@ -46,7 +50,8 @@ def check_commands(room):
   try:
     command = open("commands/" + room).read().strip()
     if command == "leave" or os.path.isfile("commands/kill"):
-      log(username, "received kill order")
+      message = "%s received kill order" % username
+      logging.info(message)
       sys.exit()
   except IOError:
     sys.exit()
@@ -58,27 +63,26 @@ if __name__ == "__main__":
   session = args.session
   room = args.room
 
-  if args.verbose:
-    logging.LOGGING = True
-
   if not session:
-    log("Logging in as", username, "with password:", password)
+    message = "Logging in as %s with password %s" % (username, password)
+    logging.info(message)
     login = api_login(username, password)
     if "error" in login:
-      log(username, login["error"])
+      message = "%s %s" % (username, login["error"])
+      logging.info(message)
       sys.exit()
     session = login["session"]
   else:
-    log("using existing session.")
-  log(session)
+    logging.info("using existing session.")
+  logging.info(session)
 
   game = api_join(session, room)
   room = game["path"]
   cards = game["cards"]
 
-  log("Robot:", username)
-  log("Joined:", room)
-  log("Hand:", cards)
+  logging.info("Robot: %s" % username)
+  logging.info("Joined: %s" % room)
+  logging.info("Hand: %s", cards)
 
   while (True):
     if not args.ignorecommands:
@@ -90,32 +94,34 @@ if __name__ == "__main__":
     state = poll["state"]
     bets = poll["bets"]
 
-    log(username, state, STATES[state])
+    message = "%s %s %s" % (username, state, STATES[state])
+    logging.info(message)
     if state == STATE_BET:
       countdown = poll["countdown"]
       if countdown > args.submitdelay:
-        log(countdown, "waiting to submit bet.")
+        message = "%s waiting to submit bet" % countdown
+        logging.info(message)
       else:
         card = best_card(cards)
         if card is None:
           card = random.choice(cards)
-        log("betting:", card)
+        logging.info("betting: %s" % card)
         bet = api_bet(session, room, card)
-        log(bet)
+        logging.info(bet)
         if len(bet) > 0:
           new_card = bet["card"]
-          log("adding:", card)
+          logging.info("adding: %s" % card)
           cards.remove(card)
           cards.append(new_card)
-          log("new hand:", cards)
+          logging.info("new hand:", cards)
     elif state == STATE_PICKED:
-      log("Waiting for players to submit.")
+      logging.info("Waiting for players to submit.")
     elif state == STATE_JUDGE:
       countdown = poll["countdown"]
       if countdown > args.judgedelay:
-        log(countdown, "waiting to submit judgement.")
+        logging.info("%s waiting to submit judgement." % countdown)
       else:
         card = best_card(bets)
-        log("bets:", bets)
-        log("betting:", card)
+        logging.info("bets:", bets)
+        logging.info("betting: %s" % card)
         api_judge(session, room, card)
